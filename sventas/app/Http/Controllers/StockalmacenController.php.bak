@@ -1,0 +1,129 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
+use App\Kardex;
+use App\Producto;
+use App\Sucursal;
+use App\Movimiento;
+use App\User;
+use App\Venta;
+use DB;
+
+class StockalmacenController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+		
+		$var1 = DB::table('kardex')->select(
+			'ItemProducto as Producto', //2. PRODUCTO (KARDEX)
+			'ObsProducto as Descripcion', //3. CARACTERISTICAS (PRODUCTO)
+			'PrecioProducto as Precio', //4. PRECIO (PRODUCTO)
+			'NroSucursal as Sucursal', //1. SUCURSAL (SUCURSAL)
+			
+			DB::Raw('SUM(CASE WHEN ObsMovimiento = "SALIDA" THEN KCantidad ELSE -KCantidad END) AS StockIngreso'), //5. STOCK (MOVIMIENTO)
+			'StockidealProducto as StockIdeal', //7. STOCK IDEAL (PRODUCTO)
+			'StockminimoProducto as StockMinimo' // 6. STOCK MINIMO (PRODUCTO)
+			)
+				->join('sucursal', 'kardex.KSucursal', '=', 'sucursal.id')
+				->join('producto', 'kardex.KProducto', '=', 'producto.id')
+				->join('movimiento', 'kardex.KMovimiento', '=', 'movimiento.id')
+				->where('kardex.KSucursal', auth()->user()->IdSucursal)
+				->groupBy('ItemProducto', 'NroSucursal' , 'StockidealProducto', 'StockminimoProducto')
+				->get();
+				
+		$var2 = DB::table('venta')->select(
+			
+		)
+				 
+		//foreach($var1 as $var11){
+			//$arreglo = $var11 -> Stock.',';
+		//}
+		return view('stockalmacen.index', ['var1' => $var1, /*'arreglo' => $arreglo*/]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+	//return view('stock.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+//	return "Hola Mundo store";
+//	return $request;
+/*
+		'DptoSucursal' => $request->DptoSucursal,
+		Sucursal::create([
+		'CiudadSucursal' => $request->CiudadSucursal,
+		'DirSucursal' => $request->DirSucursal,
+		'TelSucursal' => $request->TelSucursal
+	]);
+	return redirect('sucursal');
+*/
+	}
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+}

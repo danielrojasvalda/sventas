@@ -1,0 +1,147 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Http\Requests;
+use App\Venta;
+use App\Kardex;
+use App\Producto;
+use App\Sucursal;
+use App\Movimiento;
+use App\User;
+use App\Cliente;
+use App\Formapago;
+use App\Promocion;
+use DB;
+
+
+class VentaController extends Controller
+{
+    //
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+	          
+    public function index()
+    {
+    	$ventas = Venta::All();
+		return view('venta.index', compact('ventas'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+	$fechahoraactual = getdate();
+	//concatenar el array que devuelve getDate para salvar el formato de fecha : YYYY-mm-dd 		
+	$hoydia = "".$fechahoraactual['year']."-".$fechahoraactual['mon']."-".$fechahoraactual['mday'];
+		$sucursales = Sucursal::All();
+		$productos = Producto::All();
+		//$movimientos = Movimiento::All();
+		$clientes = Cliente::All();
+		$users = User::All();
+		$formapagos = Formapago::All();
+		
+		$verpromo = DB::table('promocion')->select(			
+			'NombreProm',			
+			'NroSucursal',			
+			'ItemProducto',
+			'PrecioProm' 
+			) 				
+			//	->join('movimiento', 'kardex.KMovimiento', '=', 'movimiento.id')			
+			->where('promocion.FechainicioProm', '<=', $hoydia) //mientras la fecha de inicio sea
+			->where('promocion.FechafinProm', '>=', $hoydia) //mientras la fecha final sea
+			->where('NroSucursal', '=', 'LPZ-1') //restriccion de sucursal por el del usuario actual
+			//->where('ItemProducto', '=', 'CELULAR 3G - HEKA') //restriccion de producto
+			->join('sucursal', 'promocion.SucursalProm', '=', 'sucursal.id')
+			->join('producto', 'promocion.ProductoProm', '=', 'producto.id')
+			//->groupBy('RazonMovimiento', 'ObsMovimiento')
+			->get();		
+		
+		return view('venta.create', ['users' => $users, 'productos' => $productos, 'sucursales' => $sucursales, /* 'movimientos' => $movimientos */ 'clientes' => $clientes, 'formapagos' => $formapagos, 'verpromo' => $verpromo]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+//	return "Hola Mundo store";
+//	return $request;
+
+	Venta::create([
+		'VUsuario' => $request->VUsuario,
+		'VSucursal' => $request->VSucursal,
+		'FechaVenta' => $request->FechaVenta,
+		'NroFactura' => $request->NroFactura,
+		'VTipoventa' => $request->VTipoventa,
+		'VFormapago' => $request->VFormapago,
+		'VMediodepago' => $request->VMediodepago,
+		'VCliente' => $request->VCliente,
+		'Importe' => $request->Importe,
+		'Obs' => $request->Obs,
+		'VProducto' => $request->VProducto,
+		'VCantidad' => $request->VCantidad,
+		'VSerie' => $request->VSerie
+	]);
+		Session::flash('save', 'Se ha guardado correctamente'); 
+	return redirect('venta');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+    
+}

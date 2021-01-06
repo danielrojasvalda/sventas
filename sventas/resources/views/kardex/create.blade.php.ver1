@@ -1,0 +1,81 @@
+@extends('layouts.app')
+@section('main-content')
+
+	<div class="container spark-screen">
+	<div class="row">
+	<div class="col-md-7 col-md-offset-1">
+	<div class="panel panel-default">
+	<div class="panel-heading"><center><h4><u><b>KARDEX DE PRODUCTOS <img src="../../public/img/bincard-logo.png" alt="" width="80"></b></u></h4></center></div>
+	
+	{!!Form::open(['route' => 'kardex.store', 'method' => 'POST'])!!}   
+   
+   <div class="panel-body">
+    
+  	<div class="form-horizontal">
+  		{!! Form::label('published_at', 'Fecha Movimiento:') !!}
+  		<!-- {!! Form::input('date', 'published_at', date('Y-m-d'), ['class'=>'form-control']) !!} -->
+  		{!! Form::input('date', 'FechaKardex', date('Y-m-d'), ['class'=>'form-inline']) !!}
+  		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  		<label>  <input type="radio" name="optradio">INGRESO</label>
+  		&nbsp;&nbsp;
+  		<label>  <input type="radio" name="optradio">EGRESO</label>
+  	</div>
+  	<div class="form-horizontal">
+                {!! Form::label('Tipo de Movimiento') !!}
+                <select name="IdMovimiento" class="form-control">
+                		<option disabled selected value>-- seleccione una opción --</option>
+        					@foreach($movimientos as $movimiento)
+         				<option value="{{ $movimiento->id}}"> {{ $movimiento->RazonMovimiento }}</option>
+        					@endforeach
+    				</select>
+ 	</div>	
+<!--	
+	<div class="form-inline">
+                {!! Form::label('Item Producto') !!}
+                 	<select name="IdProducto" class="form-control">
+							<option disabled selected value>-- seleccione un ítem --</option>        					
+        					@foreach($productos as $producto)
+         				<option value="{{ $producto->id }}"> {{ $producto->ItemProducto }}</option>
+        					@endforeach
+    					</select>
+  	</div>
+  	-->
+	
+	<div class="form-horizontal">  	
+  		<input type="hidden" class="form-control" name="IdUsuario" value="{{ Auth::user()->id }}"/>
+  	</div>
+  	
+	<div class="form-horizontal">
+                {!! Form::label('Destino Sucursal') !!}
+                <select name="IdSucursal" class="form-control">
+                		<option disabled selected value>-- seleccione una sucursal --</option>
+        					@foreach($sucursales as $sucursal)
+         				<option value="{{ $sucursal->id}}"> {{ $sucursal->NroSucursal }}</option>
+        					@endforeach
+    				</select>
+ 	</div>
+ 	
+ 	<div class="form-horizontal">
+                {!! Form::label('Referencia') !!}
+                {!! Form::text('RKardex', null, ['class' => 'form-control', 'placeholder' => 'KARDEX:: ']) !!}
+ 	</div>
+ 	  
+ 	<!--
+ 	<div class="form-horizontal">
+                {!! Form::label('Cantidad') !!}
+                {!! Form::text('CantidadKardex', null, ['class' => 'form-control', 'placeholder' => 'CANTIDAD:: ']) !!}
+ 	</div>
+ 	-->
+                
+<center>
+    	<input class="btn btn-lg btn-primary" type="submit" value="Registrar">
+    	<a href="{{ url('home') }}" class="btn btn-lg btn-primary" role="button">Volver al Menu</a>
+    	</center>
+	{!!Form::close()!!}
+	</div>
+	<center><a href="{{ url('kardex') }}" class="text-center">Listar Kardex</a></center>
+	</div>
+	</div>
+	</div>
+	</div>
+@stop

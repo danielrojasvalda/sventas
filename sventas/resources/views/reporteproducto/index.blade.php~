@@ -1,0 +1,22 @@
+@extends('layouts.app')
+@section('main-content')
+
+<center>
+<p class="bg-primary"><h2>STOCK DE PRODUCTOS <img src="../public/img/bincard-logo.png" alt="" width="80"></h2></p>
+</center>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js">
+</script>
+<center>
+<a href="{{ url('stockalmacen') }}" class="btn btn-lg btn-primary" role="button">[ Búsqueda Item ]</a>
+<a href="{{ url('home') }}" class="btn btn-lg btn-primary" role="button">[ Menu Principal ]</a>
+</center>
+
+<?php var_dump($var1); ?>
+
+	<!-- <?php echo Auth::user()->IdSucursal; ?> -->
+	
+
+    	
+			
+	
+@stop

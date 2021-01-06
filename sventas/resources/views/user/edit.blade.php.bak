@@ -1,0 +1,34 @@
+@extends('layouts.app')
+@section('main-content')
+
+
+<h1><center>Perfil del Usuario</center></h1>
+{!! Form::model($users, ['method' => 'PATCH', 'action' => ['UserController@update', $users->id] ]) !!}
+<div class="form-group">
+	{!! Form::label('nombre', 'Nombre: ') !!}
+	{!! Form::text('name', null, ['class' => 'form-control']) !!}
+</div>
+<div class="form-group">
+	{!! Form::label('cargousuario', 'Cargo Usuario: ') !!}
+	{!! Form::text('CargoUsuario', null, ['class' => 'form-control']) !!}
+</div>
+<div class="form-group">
+	{!! Form::label('CiUsuario', 'Cedula de Identidad: ') !!}
+	{!! Form::text('CiUsuario', null, ['class' => 'form-control']) !!}
+</div>
+<div class="form-group">
+	{!! Form::label('CelUsuario', 'Nro. de Celular: ') !!}
+	{!! Form::text('CelUsuario', null, ['class' => 'form-control']) !!}
+</div>
+<div class="form-group">
+	{!! Form::label('password', 'Contraseña: ') !!}
+	{!! Form::text('password', null, ['class' => 'form-control']) !!}
+</div>
+
+<center>
+    	{!! Form::submit('Actualizar', ['class' => 'btn btn-lg btn-primary']) !!}
+</center>
+
+{!!Form::close()!!}
+
+@stop

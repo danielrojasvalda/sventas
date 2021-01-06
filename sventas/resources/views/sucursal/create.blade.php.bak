@@ -1,0 +1,42 @@
+@extends('layouts.app')
+@section('main-content')
+
+	<div class="container spark-screen">
+	<div class="row">
+	<div class="col-md-10 col-md-offset-1">
+	<div class="panel panel-default">
+	<div class="panel-heading"><center><h4><u><b>REGISTRAR NUEVA SUCURSAL</b></u></h4><i class='fa fa-map-marker'></i></center></div>
+	
+	{!!Form::open(['route' => 'sucursal.store', 'method' => 'POST'])!!}
+
+   <div class="panel-body"> 	
+    	
+		<div class="form-group">
+			{!! Form::label('Departamento Sucursal') !!}
+			{!!  Form::select('DptoSucursal', ['La Paz' => 'La Paz', 'Cochabamba' => 'Cochabamba', 'Santa Cruz' => 'Santa Cruz', 'Chuquisaca' => 'Chuquisaca', 'Oruro' => 'Oruro', 'Potosi' => 'Potosi', 'Tarija' => 'Tarija', 'Beni' => 'Beni', 'Pando' => 'Pando'],  'La Paz', ['class' => 'form-control' ]) !!}
+			
+		</div>   
+    	
+	<div class="form-horizontal has-danger">
+                {!! Form::label('Ciudad Sucursal ') !!}
+                {!! Form::text('CiudadSucursal', null, ['class' => 'form-control', 'placeholder' => 'CIUDAD:: ']) !!}
+        </div>
+	<div class="form-horizontal">
+                {!! Form::label('Direccion Sucursal') !!}
+                {!! Form::text('DirSucursal', null, ['class' => 'form-control', 'placeholder' => 'DIRECCION:: ']) !!}
+        </div>
+	<div class="form-group">
+                {!! Form::label('Telefono Sucursal') !!}
+                {!! Form::text('TelSucursal', null, ['class' => 'form-control', 'placeholder' => 'TELEFONO:: ']) !!}
+        </div>
+<center>
+    	{!! Form::submit('Registrar', ['class' => 'btn btn-lg btn-primary']) !!}
+    	</center>
+    	
+	{!!Form::close()!!}
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+@stop
